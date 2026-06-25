@@ -274,13 +274,150 @@ html,body{
   font-weight:600;
 }
 
-/* SOUND TOGGLE */
-#soundBtn{
-  position:fixed;top:10px;right:108px;z-index:9999;
-  width:38px;height:38px;border:none;border-radius:10px;
-  background:rgba(0,0,0,0.7);color:white;font-weight:bold;cursor:pointer;
-  pointer-events:auto;font-size:16px;display:flex;align-items:center;justify-content:center;
+/* ═══════════════════════════════════════════════════════
+   PAUSE BUTTON — inline at end of HP bar row
+═══════════════════════════════════════════════════════ */
+#pauseBtn{
+  flex-shrink:0;
+  width:32px;height:22px;border:none;border-radius:6px;
+  background:rgba(6,10,26,0.8);border:1px solid rgba(94,247,255,0.25);
+  color:rgba(94,247,255,0.65);font-size:9px;letter-spacing:1px;font-weight:900;
+  cursor:pointer;pointer-events:auto;line-height:1;
 }
+#pauseBtn:active{opacity:0.55;}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN MENU — cinematic dark
+═══════════════════════════════════════════════════════ */
+#mainMenu{
+  position:fixed;inset:0;z-index:25;overflow:hidden;
+  background:#02020a;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding-bottom:14vh;
+}
+/* animated canvas background */
+#menuBgCanvas{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+}
+/* dark gradient vignette over the canvas */
+#mainMenu::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 38%,transparent 30%,rgba(2,2,10,0.7) 100%),
+    linear-gradient(to bottom,rgba(2,2,10,0.2) 0%,rgba(2,2,10,0.0) 30%,rgba(2,2,10,0.6) 70%,rgba(2,2,10,0.97) 100%);
+  pointer-events:none;z-index:1;
+}
+#menuContent{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:0;width:100%;
+}
+#menuLogoWrap{
+  display:flex;flex-direction:column;align-items:center;margin-bottom:10px;
+}
+#menuMainTitle{
+  font-size:clamp(28px,9vw,52px);font-weight:900;letter-spacing:clamp(2px,1.5vw,8px);color:#fff;
+  line-height:1;text-align:center;margin:0;white-space:nowrap;
+  text-shadow:0 2px 0 rgba(0,0,0,0.8),0 0 30px rgba(94,247,255,0.6),0 0 70px rgba(255,94,240,0.3);
+  animation:menuTitlePulse 4s ease-in-out infinite;
+}
+@keyframes menuTitlePulse{
+  0%,100%{text-shadow:0 2px 0 rgba(0,0,0,0.8),0 0 30px rgba(94,247,255,0.5),0 0 70px rgba(255,94,240,0.25);}
+  50%{text-shadow:0 2px 0 rgba(0,0,0,0.8),0 0 50px rgba(94,247,255,0.9),0 0 100px rgba(255,94,240,0.5),0 0 140px rgba(94,247,255,0.2);}
+}
+#menuSubTitle{
+  font-size:11px;color:#5ef7ff;letter-spacing:9px;font-weight:600;
+  margin-top:8px;opacity:0.85;text-shadow:0 0 12px #5ef7ff;
+}
+#menuLine{
+  width:180px;height:1px;margin:14px auto 28px;
+  background:linear-gradient(90deg,transparent,rgba(94,247,255,0.5),rgba(255,94,240,0.5),transparent);
+}
+#menuBtns{
+  display:flex;flex-direction:column;align-items:center;gap:12px;width:72%;max-width:240px;
+}
+#mainPlayBtn{
+  width:100%;padding:16px 0;border:none;border-radius:50px;
+  font-size:17px;font-weight:900;letter-spacing:4px;color:#02020a;
+  background:linear-gradient(135deg,#5ef7ff 0%,#a78cff 50%,#ff5ef0 100%);
+  box-shadow:0 0 28px rgba(94,247,255,0.45),0 4px 0 rgba(0,0,0,0.5);
+  cursor:pointer;pointer-events:auto;
+  animation:playBtnPulse 2.5s ease-in-out infinite;
+}
+@keyframes playBtnPulse{
+  0%,100%{box-shadow:0 0 28px rgba(94,247,255,0.4),0 4px 0 rgba(0,0,0,0.5);}
+  50%{box-shadow:0 0 50px rgba(94,247,255,0.7),0 0 80px rgba(255,94,240,0.3),0 4px 0 rgba(0,0,0,0.5);}
+}
+#mainPlayBtn:active{transform:translateY(3px);animation:none;box-shadow:0 0 20px rgba(94,247,255,0.3),0 1px 0 rgba(0,0,0,0.5);}
+#mainHowBtn,#mainFsBtn{
+  width:100%;padding:12px 0;
+  border:1.5px solid rgba(94,247,255,0.25);border-radius:50px;
+  font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(157,220,255,0.8);
+  background:rgba(6,10,26,0.5);cursor:pointer;pointer-events:auto;
+}
+#mainHowBtn:active,#mainFsBtn:active{background:rgba(94,247,255,0.08);}
+#menuVer{
+  margin-top:16px;font-size:9px;color:rgba(42,58,85,0.8);letter-spacing:3px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PAUSE MENU — centered dark panel, well below topbar
+═══════════════════════════════════════════════════════ */
+#pauseMenu{
+  position:fixed;inset:0;z-index:22;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(2,2,10,0.75);backdrop-filter:blur(4px);
+}
+#pauseBox{
+  background:linear-gradient(160deg,rgba(12,8,28,0.98),rgba(4,4,16,0.98));
+  border:1.5px solid rgba(94,247,255,0.22);border-radius:20px;
+  padding:20px 22px 18px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  width:min(78vw,240px);
+  box-shadow:0 0 50px rgba(94,247,255,0.08),0 24px 60px rgba(0,0,0,0.7);
+}
+#pauseTitle{
+  font-size:20px;font-weight:900;letter-spacing:5px;color:#fff;margin:0;
+  text-shadow:0 0 14px rgba(94,247,255,0.6);
+}
+#pauseSub{font-size:9px;color:rgba(94,247,255,0.55);letter-spacing:4px;margin-top:-6px;}
+.pauseHr{width:100%;height:1px;border:none;background:linear-gradient(90deg,transparent,rgba(94,247,255,0.2),transparent);}
+#pauseOptions{display:flex;flex-direction:column;gap:8px;width:100%;}
+.pRow{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;border-radius:10px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(94,247,255,0.1);
+  color:#cdeaff;font-size:11px;font-weight:700;letter-spacing:1px;
+}
+.pRowLabel{display:flex;align-items:center;gap:8px;font-size:13px;}
+.pToggle{
+  width:38px;height:20px;border-radius:10px;border:none;cursor:pointer;
+  background:rgba(255,255,255,0.1);position:relative;transition:background 0.2s;
+  flex-shrink:0;pointer-events:auto;
+}
+.pToggle.on{background:linear-gradient(90deg,#5ef7ff,#7a5cff);}
+.pToggle::after{
+  content:'';position:absolute;top:3px;left:3px;
+  width:14px;height:14px;border-radius:50%;background:#fff;
+  transition:left 0.18s;box-shadow:0 1px 4px rgba(0,0,0,0.5);
+}
+.pToggle.on::after{left:21px;}
+#pauseBtns{display:flex;flex-direction:column;gap:7px;width:100%;}
+#resumeBtn,#pauseToMenuBtn{
+  width:100%;padding:11px 0;border-radius:50px;
+  font-size:13px;font-weight:700;letter-spacing:2px;
+  cursor:pointer;pointer-events:auto;
+}
+#resumeBtn{
+  border:none;color:#02020a;
+  background:linear-gradient(135deg,#5ef7ff,#ff5ef0);
+  box-shadow:0 0 20px rgba(94,247,255,0.35),0 3px 0 rgba(0,0,0,0.4);
+}
+#resumeBtn:active{transform:translateY(2px);box-shadow:0 0 10px rgba(94,247,255,0.2);}
+#pauseToMenuBtn{
+  border:1.5px solid rgba(94,247,255,0.22);
+  color:rgba(157,220,255,0.75);background:transparent;
+}
+#pauseToMenuBtn:active{background:rgba(94,247,255,0.06);}
 
 /* ═══════════════════════════════════════════════════════
    MOBILE: FORCE LANDSCAPE
@@ -364,22 +501,6 @@ html,body{
   html.is-touch #abilityBtn{width:54px;height:54px;right:98px;bottom:26px;font-size:18px;}
 }
 
-#fullscreenBtn{
-  position:fixed;
-  top:10px;
-  right:10px;
-  z-index:9999;
-  width:88px;
-  padding:10px 0;
-  border:none;
-  border-radius:10px;
-  background:rgba(0,0,0,0.7);
-  color:white;
-  font-weight:bold;
-  font-size:13px;
-  cursor:pointer;
-  pointer-events:auto;
-}
 
 </style>
 </head>
@@ -389,8 +510,12 @@ html,body{
 
 <div id="ui">
   <div id="topbar">
-    <div class="barRow"><div class="barLabel">HP</div><div class="barOuter"><div id="hpFill" class="barInner"></div></div></div>
-    <div class="barRow" id="shieldRow" style="display:none"><div class="barLabel">🛡</div><div class="barOuter"><div id="shieldFill" class="barInner"></div></div></div>
+    <div class="barRow">
+      <div class="barLabel">HP</div>
+      <div class="barOuter"><div id="hpFill" class="barInner"></div></div>
+      <button id="pauseBtn" class="hidden">&#9646;&#9646;</button>
+    </div>
+    <div class="barRow" id="shieldRow" style="display:none"><div class="barLabel">&#128737;</div><div class="barOuter"><div id="shieldFill" class="barInner"></div></div></div>
     <div class="barRow"><div class="barLabel">XP</div><div class="barOuter"><div id="xpFill" class="barInner"></div></div></div>
     <div id="bossWrap">
       <div id="bossName">BOSS</div>
@@ -425,14 +550,68 @@ html,body{
 <div id="flashOverlay"></div>
 <div id="vignetteOverlay"></div>
 
-<!-- START SCREEN -->
-<div class="screen" id="startScreen">
-  <h1 class="titleFont">POCKET ARENA</h1>
-  <div class="titleSub">NEXUS PROTOCOL</div>
-  <p class="subFont">Choose your Nexus Warrior. Survive endless waves. Auto-aim, auto-fire. Left stick to move, right side to dash &amp; activate abilities. Level up, collect upgrades, become unstoppable.</p>
+<!-- MAIN MENU — cinematic -->
+<div id="mainMenu">
+  <canvas id="menuBgCanvas"></canvas>
+  <div id="menuContent">
+    <div id="menuLogoWrap">
+      <div id="menuMainTitle">POCKET ARENA</div>
+      <div id="menuSubTitle">NEXUS PROTOCOL</div>
+      <div id="menuLine"></div>
+    </div>
+    <div id="menuBtns">
+      <button id="mainPlayBtn">PLAY</button>
+      <button id="mainHowBtn">HOW TO PLAY</button>
+      <button id="mainFsBtn">&#9974; FULLSCREEN</button>
+    </div>
+    <div id="menuVer">v1.0 &middot; NEXUS BUILD</div>
+  </div>
+</div>
+
+<!-- HOW TO PLAY -->
+<div class="screen hidden" id="howToScreen" style="z-index:26;">
+  <h1 class="titleFont" style="font-size:30px;">HOW TO PLAY</h1>
+  <p class="subFont" style="max-width:300px;text-align:left;line-height:2;">
+    &#128281; Left side &mdash; <b>drag to move</b><br>
+    &#128168; Right side &mdash; tap to <b>DASH</b><br>
+    &#9889; Ability button &mdash; <b>class power</b><br>
+    &#127919; Auto-aim &amp; Auto-fire<br>
+    &#11088; Level up &amp; become unstoppable
+  </p>
+  <button class="bigBtn" id="howBackBtn">GOT IT</button>
+</div>
+
+<!-- START SCREEN (character select) -->
+<div class="screen hidden" id="startScreen">
+  <h1 class="titleFont" style="font-size:34px;">SELECT WARRIOR</h1>
+  <div class="titleSub">CHOOSE YOUR CLASS</div>
   <div id="classSelect"></div>
   <button class="bigBtn" id="startBtn">ENTER ARENA</button>
   <div style="color:#4d6080;font-size:11px;letter-spacing:1px;margin-top:-8px;">TAP A CLASS TO SELECT</div>
+</div>
+
+<!-- PAUSE MENU — centered panel -->
+<div id="pauseMenu" class="hidden">
+  <div id="pauseBox">
+    <div id="pauseTitle">PAUSED</div>
+    <div id="pauseSub">NEXUS PROTOCOL</div>
+    <hr class="pauseHr">
+    <div id="pauseOptions">
+      <div class="pRow">
+        <span class="pRowLabel">&#128266; SOUND</span>
+        <button class="pToggle on" id="pauseSoundToggle"></button>
+      </div>
+      <div class="pRow" id="fsRow">
+        <span class="pRowLabel">&#9974; FULLSCREEN</span>
+        <button class="pToggle" id="pauseFsToggle"></button>
+      </div>
+    </div>
+    <hr class="pauseHr">
+    <div id="pauseBtns">
+      <button id="resumeBtn">&#9654; RESUME</button>
+      <button id="pauseToMenuBtn">MAIN MENU</button>
+    </div>
+  </div>
 </div>
 
 <!-- GAMEOVER SCREEN -->
@@ -1037,6 +1216,8 @@ let selectedClass='vanguard';
    GAME STATE
 ═══════════════════════════════════════════════════════ */
 let state='start';
+// Bridge so pause menu (outside IIFE) can read/write state
+window.__gameState = { get state(){ return state; }, set state(v){ state=v; }, _prevState:null };
 let score=0;
 let wave=0;
 let elapsedTime=0;
@@ -2777,6 +2958,7 @@ function buildClassSelect(){
     drawClassIcon(cx2,key,cls.color,32,32,28);
   }
 }
+window.buildClassSelect = buildClassSelect;
 
 /* ═══════════════════════════════════════════════════════
    CHARACTER ART HELPERS
@@ -3760,35 +3942,37 @@ function drawDamageNumbers(t){
 ═══════════════════════════════════════════════════════ */
 document.getElementById('startBtn').addEventListener('click',()=>{
   document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('pauseBtn').classList.remove('hidden');
   resetGame(); state='playing';
 });
 document.getElementById('retryBtn').addEventListener('click',()=>{
   document.getElementById('gameoverScreen').classList.add('hidden');
+  document.getElementById('pauseBtn').classList.remove('hidden');
   resetGame(); state='playing';
 });
 document.getElementById('menuBtn').addEventListener('click',()=>{
   document.getElementById('gameoverScreen').classList.add('hidden');
-  document.getElementById('startScreen').classList.remove('hidden');
-  buildClassSelect();
+  document.getElementById('pauseBtn').classList.add('hidden');
+  document.getElementById('mainMenu').classList.remove('hidden');
 });
 
 /* ═══════════════════════════════════════════════════════
    INIT CLASS SELECT
 ═══════════════════════════════════════════════════════ */
-buildClassSelect();
-
-// animate class icons while on start screen
+// buildClassSelect is exposed as window.buildClassSelect above
+// Continuously animate class card icons whenever the start screen is visible
 (function animateClassIcons(){
-  if(document.getElementById('startScreen').classList.contains('hidden'))return;
-  document.querySelectorAll('.classCard').forEach(card=>{
-    const cc=card.querySelector('canvas');
-    if(!cc)return;
-    const key=card.dataset.cls;
-    const cls=CLASSES[key];
-    if(!cls)return;
-    const c2=cc.getContext('2d');
-    drawClassIcon(c2,key,cls.color,32,32,28);
-  });
+  if(!document.getElementById('startScreen').classList.contains('hidden')){
+    document.querySelectorAll('.classCard').forEach(card=>{
+      const cc=card.querySelector('canvas');
+      if(!cc)return;
+      const key=card.dataset.cls;
+      const cls=CLASSES[key];
+      if(!cls)return;
+      const c2=cc.getContext('2d');
+      drawClassIcon(c2,key,cls.color,32,32,28);
+    });
+  }
   requestAnimationFrame(animateClassIcons);
 })();
 
@@ -3800,6 +3984,10 @@ function loop(now){
   let dt=(now-lastT)/1000;
   lastT=now;
   dt=Math.min(dt,1/28);
+  if(state==='paused'){
+    requestAnimationFrame(loop);
+    return;
+  }
   if(hitStop>0){
     hitStop-=dt;
     dt*=0.05;
@@ -3819,36 +4007,222 @@ requestAnimationFrame(loop);
 })();
 </script>
 
-<button id="fullscreenBtn">⛶ Fullscreen</button>
-<button id="soundBtn">🔊</button>
+<button id="fullscreenBtn" style="display:none"></button>
+<button id="soundBtn" style="display:none"></button>
 <script>
-const fullscreenBtn = document.getElementById('fullscreenBtn');
-if(fullscreenBtn){
-fullscreenBtn.addEventListener('click', async () => {
-  try {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-      if (screen.orientation && screen.orientation.lock) {
-        try { await screen.orientation.lock('landscape'); } catch(e) {}
-      }
-    } else {
-      await document.exitFullscreen();
-    }
-  } catch (err) {
-    console.log(err);
+(function(){
+  /* ── element refs ── */
+  const mainMenu    = document.getElementById('mainMenu');
+  const menuBgCanvas= document.getElementById('menuBgCanvas');
+  const startScreen = document.getElementById('startScreen');
+  const howToScreen = document.getElementById('howToScreen');
+  const pauseMenu   = document.getElementById('pauseMenu');
+  const pauseBtn    = document.getElementById('pauseBtn');
+
+  /* ════════════════════════════════════════════════
+     CINEMATIC BACKGROUND — slow drifting orbs + grid
+  ════════════════════════════════════════════════ */
+  const mc  = menuBgCanvas;
+  const mx  = mc.getContext('2d');
+  let mW, mH;
+
+  function resizeMenuCanvas(){
+    mW = mc.width  = window.innerWidth;
+    mH = mc.height = window.innerHeight;
   }
-});
-}
-const soundBtn = document.getElementById('soundBtn');
-if(soundBtn){
+  resizeMenuCanvas();
+  window.addEventListener('resize', resizeMenuCanvas);
+
+  // grid lines
+  const GRID_COLOR = 'rgba(94,247,255,0.045)';
+  // drifting orbs
+  const orbs = Array.from({length:7}, (_,i)=>({
+    x: Math.random()*100, y: Math.random()*100,
+    r: 120 + Math.random()*160,
+    vx:(Math.random()-0.5)*0.008,
+    vy:(Math.random()-0.5)*0.008,
+    hue: i%2===0 ? '#5ef7ff' : '#ff5ef0',
+    alpha: 0.04 + Math.random()*0.06,
+  }));
+  // scanline offset
+  let scanY = 0;
+
+  function drawMenuBg(t){
+    if(mainMenu.classList.contains('hidden')) return;
+    mx.clearRect(0,0,mW,mH);
+
+    // deep space gradient
+    const bg = mx.createLinearGradient(0,0,0,mH);
+    bg.addColorStop(0,'#03010d');
+    bg.addColorStop(0.5,'#05020f');
+    bg.addColorStop(1,'#02020a');
+    mx.fillStyle = bg;
+    mx.fillRect(0,0,mW,mH);
+
+    // drifting glow orbs
+    orbs.forEach(o=>{
+      o.x += o.vx; o.y += o.vy;
+      if(o.x<-0.2) o.x=1.2; if(o.x>1.2) o.x=-0.2;
+      if(o.y<-0.2) o.y=1.2; if(o.y>1.2) o.y=-0.2;
+      const gx = mx.createRadialGradient(o.x*mW,o.y*mH,0,o.x*mW,o.y*mH,o.r);
+      gx.addColorStop(0, o.hue.replace(')',`,${o.alpha})`).replace('rgb','rgba').replace('#5ef7ff',`rgba(94,247,255,${o.alpha})`).replace('#ff5ef0',`rgba(255,94,240,${o.alpha})`));
+      gx.addColorStop(1,'rgba(0,0,0,0)');
+      // simpler:
+      const col = o.hue==='#5ef7ff'
+        ? `rgba(94,247,255,${o.alpha})`
+        : `rgba(255,94,240,${o.alpha})`;
+      const g2 = mx.createRadialGradient(o.x*mW,o.y*mH,0,o.x*mW,o.y*mH,o.r);
+      g2.addColorStop(0,col); g2.addColorStop(1,'rgba(0,0,0,0)');
+      mx.fillStyle=g2; mx.fillRect(0,0,mW,mH);
+    });
+
+    // perspective grid — converges to centre
+    const cx=mW/2, cy=mH*0.42;
+    const speed = (t*0.00006)%1;
+    mx.save();
+    mx.strokeStyle = GRID_COLOR;
+    mx.lineWidth = 0.8;
+    // horizontal lines receding
+    for(let i=0;i<12;i++){
+      const pct = ((i/11)+speed)%1;
+      const yy  = cy + (mH - cy)*pct;
+      const xOff= (mW*0.55)*pct;
+      mx.beginPath();
+      mx.moveTo(cx-xOff, yy);
+      mx.lineTo(cx+xOff, yy);
+      mx.globalAlpha = pct*0.6;
+      mx.stroke();
+    }
+    mx.globalAlpha=1;
+    // vertical "lane" lines
+    const lanes = 8;
+    for(let i=0;i<=lanes;i++){
+      const fx = (i/lanes)-0.5;
+      mx.beginPath();
+      mx.moveTo(cx + fx*mW*0.22, cy);
+      mx.lineTo(cx + fx*mW,       mH+10);
+      mx.globalAlpha=0.06+Math.abs(fx)*0.04;
+      mx.stroke();
+    }
+    mx.globalAlpha=1;
+    mx.restore();
+
+    // subtle scanline sweep
+    scanY = (scanY+0.4)%mH;
+    const sg = mx.createLinearGradient(0,scanY-40,0,scanY+40);
+    sg.addColorStop(0,'rgba(94,247,255,0)');
+    sg.addColorStop(0.5,'rgba(94,247,255,0.025)');
+    sg.addColorStop(1,'rgba(94,247,255,0)');
+    mx.fillStyle=sg; mx.fillRect(0,scanY-40,mW,80);
+
+    requestAnimationFrame(drawMenuBg);
+  }
+  requestAnimationFrame(drawMenuBg);
+
+  /* ════════════════════════════════════════════════
+     MAIN MENU NAVIGATION
+  ════════════════════════════════════════════════ */
+  document.getElementById('mainPlayBtn').addEventListener('click',()=>{
+    mainMenu.classList.add('hidden');
+    startScreen.classList.remove('hidden');
+    if(window.buildClassSelect) window.buildClassSelect();
+  });
+  document.getElementById('mainHowBtn').addEventListener('click',()=>{
+    mainMenu.classList.add('hidden');
+    howToScreen.classList.remove('hidden');
+  });
+  document.getElementById('howBackBtn').addEventListener('click',()=>{
+    howToScreen.classList.add('hidden');
+    mainMenu.classList.remove('hidden');
+  });
+  // Fullscreen on main menu
+  const mainFsBtn = document.getElementById('mainFsBtn');
+  if(mainFsBtn){
+    // hide if not supported
+    if(!document.documentElement.requestFullscreen && !document.documentElement.webkitRequestFullscreen){
+      mainFsBtn.style.display='none';
+    }
+    async function toggleFs(){
+      try{
+        if(!document.fullscreenElement){
+          await document.documentElement.requestFullscreen();
+          try{ await screen.orientation.lock('landscape'); }catch(e){}
+          mainFsBtn.textContent='EXIT FULLSCREEN';
+        } else {
+          await document.exitFullscreen();
+          mainFsBtn.textContent='⛶ FULLSCREEN';
+        }
+      }catch(e){}
+    }
+    mainFsBtn.addEventListener('click', toggleFs);
+    document.addEventListener('fullscreenchange',()=>{
+      mainFsBtn.textContent = document.fullscreenElement ? 'EXIT FULLSCREEN' : '⛶ FULLSCREEN';
+    });
+  }
+
+  /* ════════════════════════════════════════════════
+     PAUSE — uses window.__gameState bridge set by IIFE
+  ════════════════════════════════════════════════ */
   let soundOn = true;
-  soundBtn.addEventListener('click', () => {
-    soundOn = !soundOn;
-    soundBtn.textContent = soundOn ? '🔊' : '🔇';
-    // Access the IIFE-scoped audio toggler via a global bridge set below.
+
+  function openPause(){
+    const s = window.__gameState;
+    if(!s) return;
+    if(s.state==='playing'||s.state==='levelup'){
+      s._prevState = s.state;
+      s.state = 'paused';
+      pauseMenu.classList.remove('hidden');
+    }
+  }
+  function closePause(){
+    const s = window.__gameState;
+    pauseMenu.classList.add('hidden');
+    if(s && s._prevState){
+      s.state = s._prevState;
+      s._prevState = null;
+    }
+  }
+
+  pauseBtn.addEventListener('click', openPause);
+  document.getElementById('resumeBtn').addEventListener('click', closePause);
+
+  document.getElementById('pauseToMenuBtn').addEventListener('click',()=>{
+    const s = window.__gameState;
+    pauseMenu.classList.add('hidden');
+    pauseBtn.classList.add('hidden');
+    if(s){ s.state='start'; s._prevState=null; }
+    mainMenu.classList.remove('hidden');
+  });
+
+  // Sound toggle
+  const pSnd = document.getElementById('pauseSoundToggle');
+  pSnd.addEventListener('click',()=>{
+    soundOn=!soundOn;
+    pSnd.classList.toggle('on',soundOn);
     if(window.__pocketArenaAudioSetEnabled) window.__pocketArenaAudioSetEnabled(soundOn);
   });
-}
+
+  // Fullscreen toggle
+  function syncFs(){
+    const on = !!document.fullscreenElement;
+    document.getElementById('pauseFsToggle').classList.toggle('on',on);
+  }
+  document.addEventListener('fullscreenchange',syncFs);
+  document.getElementById('pauseFsToggle').addEventListener('click',async()=>{
+    try{
+      if(!document.fullscreenElement){
+        await document.documentElement.requestFullscreen();
+        try{ await screen.orientation.lock('landscape'); }catch(e){}
+      } else { await document.exitFullscreen(); }
+    }catch(e){}
+    syncFs();
+  });
+  // hide fullscreen row if not supported
+  if(!document.documentElement.requestFullscreen){
+    const r=document.getElementById('fsRow'); if(r) r.style.display='none';
+  }
+})();
 </script>
+
 </body>
 </html>
